@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judge Score Entry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background: #181a1b;
+            color: #fff;
+        }
+        .form-section {
+            background: #23272b;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            margin-top: 2rem;
+        }
+        .form-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .form-header i {
+            font-size: 2.2rem;
+            color: #7289da;
+        }
+        .student-card {
+            background: #202225;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(114,137,218,0.08);
+            padding: 1.5rem 1rem 1rem 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: box-shadow 0.2s;
+        }
+        .student-card:hover {
+            box-shadow: 0 6px 24px rgba(114,137,218,0.18);
+        }
+        .student-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #7289da 60%, #23272b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .student-avatar i {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        .floating-label .form-control:focus ~ label,
+        .floating-label .form-control:not(:placeholder-shown) ~ label {
+            top: -0.8rem;
+            left: 0.75rem;
+            font-size: 0.85rem;
+            color: #7289da;
+            background: #202225;
+            padding: 0 0.25rem;
+        }
+        .floating-label {
+            position: relative;
+            margin-bottom: 1.2rem;
+        }
+        .floating-label label {
+            position: absolute;
+            top: 0.7rem;
+            left: 1.1rem;
+            color: #b3b3b3;
+            pointer-events: none;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .floating-label .form-control {
+            padding-top: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .score-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 2.1rem;
+            color: #7289da;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+        .btn-modern {
+            background: linear-gradient(90deg, #7289da 60%, #5b6eae 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 2rem;
+            box-shadow: 0 2px 12px rgba(114,137,218,0.12);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .btn-modern:hover {
+            background: linear-gradient(90deg, #5b6eae 60%, #7289da 100%);
+            box-shadow: 0 6px 24px rgba(114,137,218,0.18);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="form-section">
+                    <div class="form-header">
+                        <i class="fas fa-gavel"></i>
+                        <h2 class="mb-0">Judge Score Entry</h2>
+                    </div>
+                    <form id="judgeScoreForm" autocomplete="off">
+                        <!-- Student 1 -->
+                        <div class="student-card">
+                            <div class="row align-items-center g-3">
+                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
+                                    <div class="student-avatar me-3"><i class="fas fa-user-graduate"></i></div>
+                                    <div>
+                                        <div class="fw-bold fs-5">John Doe</div>
+                                        <div class="text-secondary small">Student</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="floating-label">
+                                        <input type="text" pattern="^\\d{1,3}$" maxlength="3" class="form-control form-control-sm" name="score_john" placeholder=" " required inputmode="numeric">
+                                        <label>Score</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Student 2 -->
+                        <div class="student-card">
+                            <div class="row align-items-center g-3">
+                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
+                                    <div class="student-avatar me-3"><i class="fas fa-user-graduate"></i></div>
+                                    <div>
+                                        <div class="fw-bold fs-5">Jane Smith</div>
+                                        <div class="text-secondary small">Student</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="floating-label">
+                                        <input type="text" pattern="^\\d{1,3}$" maxlength="3" class="form-control form-control-sm" name="score_jane" placeholder=" " required inputmode="numeric">
+                                        <label>Score</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Student 3 -->
+                        <div class="student-card">
+                            <div class="row align-items-center g-3">
+                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
+                                    <div class="student-avatar me-3"><i class="fas fa-user-graduate"></i></div>
+                                    <div>
+                                        <div class="fw-bold fs-5">Mike Johnson</div>
+                                        <div class="text-secondary small">Student</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="floating-label">
+                                        <input type="text" pattern="^\\d{1,3}$" maxlength="3" class="form-control form-control-sm" name="score_mike" placeholder=" " required inputmode="numeric">
+                                        <label>Score</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-modern btn-lg"><i class="fas fa-check me-2"></i>Submit Scores</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('judgeScoreForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Scores submitted!');
+        });
+    </script>
+</body>
+</html> 

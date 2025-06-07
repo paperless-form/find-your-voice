@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .leaderboard-card.first {
+            background: linear-gradient(135deg, #ffd700 60%, #fffbe6 100%);
+            color: #222;
+        }
+        .leaderboard-card.second {
+            background: linear-gradient(135deg, #c0c0c0 60%, #f4f4f4 100%);
+            color: #222;
+        }
+        .leaderboard-card.third {
+            background: linear-gradient(135deg, #cd7f32 60%, #f7e6d2 100%);
+            color: #222;
+        }
+        .leaderboard-card {
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: #7289da;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px auto;
+        }
+        .user-avatar i {
+            font-size: 24px;
+            color: white;
+        }
+        .view-scores {
+            background: none;
+            border: none;
+            color: #7289da;
+            cursor: pointer;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(114, 137, 218, 0.1);
+        }
+        .view-scores:hover {
+            color: white;
+            background-color: #7289da;
+        }
+        @media (max-width: 767.98px) {
+            .leaderboard-card { margin-bottom: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    <div class="container-fluid min-vh-100 py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-secondary rounded-4 p-4 mb-2">
+                    <h1 class="mb-3 mb-md-0">Dashboard</h1>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex align-items-center bg-dark rounded-3 px-3 py-2 me-2">
+                            <i class="fas fa-clock me-2 text-primary"></i>
+                            <span id="current-time">00:00:00</span>
+                        </div>
+                        <div class="d-flex align-items-center bg-dark rounded-3 px-3 py-2">
+                            <i class="fas fa-stopwatch me-2 text-primary"></i>
+                            <span id="timer">00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="row g-4">
+            <!-- Activities Table -->
+            <div class="col-12 col-lg-7">
+                <div class="bg-secondary rounded-4 p-4 h-100">
+                    <h2 class="mb-4">Activities</h2>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>09:00 AM</td>
+                                    <td>Morning Meeting</td>
+                                    <td>Daily team sync-up and planning session</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>10:30 AM</td>
+                                    <td>Project Review</td>
+                                    <td>Review of current sprint progress and blockers</td>
+                                    <td><span class="badge bg-warning text-dark">In Progress</span></td>
+                                </tr>
+                                <tr>
+                                    <td>02:00 PM</td>
+                                    <td>Team Workshop</td>
+                                    <td>UI/UX design principles and best practices</td>
+                                    <td><span class="badge bg-danger">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Leaderboard -->
+            <div class="col-12 col-lg-5">
+                <div class="bg-secondary rounded-4 p-4 h-100">
+                    <h2 class="mb-4">Leaderboard</h2>
+                    <!-- Responsive Podium: row on md+, column on sm -->
+                    <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center align-items-end mb-4">
+                        <div class="col d-flex">
+                            <div class="leaderboard-card second flex-fill w-100">
+                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
+                                <div><strong>John Doe</strong></div>
+                                <div>850 Points</div>
+                                <button class="view-scores" data-user="John Doe" data-score="850"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="col d-flex">
+                            <div class="leaderboard-card first flex-fill w-100">
+                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
+                                <div><strong>Jane Smith</strong></div>
+                                <div>950 Points</div>
+                                <button class="view-scores" data-user="Jane Smith" data-score="950"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="col d-flex">
+                            <div class="leaderboard-card third flex-fill w-100">
+                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
+                                <div><strong>Mike Johnson</strong></div>
+                                <div>750 Points</div>
+                                <button class="view-scores" data-user="Mike Johnson" data-score="750"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group mb-3">
+                        <div class="list-group-item bg-dark d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-3">4</span>
+                                <div class="user-avatar small me-2" style="width:32px;height:32px;"><i class="fas fa-user"></i></div>
+                                <div>
+                                    <div><strong>Sarah Wilson</strong></div>
+                                    <div class="small text-secondary">700 Points</div>
+                                </div>
+                            </div>
+                            <button class="view-scores" data-user="Sarah Wilson" data-score="700"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <div class="list-group-item bg-dark d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-3">5</span>
+                                <div class="user-avatar small me-2" style="width:32px;height:32px;"><i class="fas fa-user"></i></div>
+                                <div>
+                                    <div><strong>Tom Brown</strong></div>
+                                    <div class="small text-secondary">650 Points</div>
+                                </div>
+                            </div>
+                            <button class="view-scores" data-user="Tom Brown" data-score="650"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100"><i class="fas fa-chevron-down me-2"></i>View More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="scoreModal" tabindex="-1" aria-labelledby="scoreModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-secondary text-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="scoreModalLabel">User Score</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h2 id="modalUserName"></h2>
+            <div class="score-details">
+                <div class="score-item mb-3">
+                    <h5>Total Score</h5>
+                    <p id="modalTotalScore" class="fs-4 mb-0"></p>
+                </div>
+                <div class="score-breakdown">
+                    <h6>Score Breakdown</h6>
+                    <div class="d-flex justify-content-between border-bottom py-1">
+                        <span>Daily Challenges</span>
+                        <span id="modalDailyScore">350</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom py-1">
+                        <span>Weekly Goals</span>
+                        <span id="modalWeeklyScore">250</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span>Special Events</span>
+                        <span id="modalSpecialScore">150</span>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle (must be after modal HTML) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('current-time').textContent = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Simple timer functionality
+        let seconds = 0;
+        function updateTimer() {
+            seconds++;
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+        setInterval(updateTimer, 1000);
+
+        // Bootstrap Modal functionality
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     var scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'));
+        //     document.querySelectorAll('.view-scores').forEach(function(btn) {
+        //         btn.addEventListener('click', function() {
+        //             var user = this.getAttribute('data-user');
+        //             var score = this.getAttribute('data-score');
+        //             document.getElementById('modalUserName').textContent = user;
+        //             document.getElementById('modalTotalScore').textContent = score + ' Points';
+        //             scoreModal.show();
+        //         });
+        //     });
+        // });
+
+        // $(document).on('click','.close-btn',function(){
+        //     $('#scoreModal').modal('hide');
+        // });
+    </script>
+</body>
+</html> 
