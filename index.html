@@ -54,13 +54,174 @@
             align-items: center;
             justify-content: center;
             background-color: rgba(114, 137, 218, 0.1);
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
         }
         .view-scores:hover {
             color: white;
             background-color: #7289da;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+        }
+        .view-scores::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        .view-scores:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+        .view-scores i {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+        }
+        .table-view-btn {
+            background: rgba(114, 137, 218, 0.1);
+            border: 2px solid #7289da;
+            color: #7289da;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .table-view-btn:hover {
+            background: #7289da;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+        }
+        .table-view-btn i {
+            font-size: 0.9rem;
         }
         @media (max-width: 767.98px) {
             .leaderboard-card { margin-bottom: 1.5rem; }
+        }
+        .position-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .leaderboard-card {
+            position: relative;
+            padding-top: 1rem;
+        }
+        #viewMoreBtn {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #7289da 0%, #5b6eae 100%);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        #viewMoreBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #5b6eae 0%, #7289da 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        #viewMoreBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(114, 137, 218, 0.4);
+        }
+        #viewMoreBtn:hover::before {
+            opacity: 1;
+        }
+        #viewMoreBtn i {
+            transition: transform 0.3s ease;
+            margin-right: 8px;
+        }
+        #viewMoreBtn.rotated i {
+            transform: rotate(180deg);
+        }
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #7289da;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        .loader-text {
+            color: #7289da;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .badge.bg-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%) !important;
+            color: #000 !important;
+        }
+        .badge.bg-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        }
+        .badge.bg-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+        }
+        .badge.bg-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+        }
+        .activity-in-progress {
+            background: rgba(23, 162, 184, 0.1) !important;
+            border-left: 4px solid #17a2b8 !important;
         }
     </style>
 </head>
@@ -70,7 +231,7 @@
         <div class="row mb-4">
             <div class="col-12">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-secondary rounded-4 p-4 mb-2">
-                    <h1 class="mb-3 mb-md-0">Dashboard</h1>
+                    <h1 class="mb-3 mb-md-0">Find Your Voice Dashboard</h1>
                     <div class="d-flex gap-3">
                         <div class="d-flex align-items-center bg-dark rounded-3 px-3 py-2 me-2">
                             <i class="fas fa-clock me-2 text-primary"></i>
@@ -89,7 +250,7 @@
             <!-- Activities Table -->
             <div class="col-12 col-lg-7">
                 <div class="bg-secondary rounded-4 p-4 h-100">
-                    <h2 class="mb-4">Activities</h2>
+                    <h2 class="mb-4">Activities Day-1</h2>
                     <div class="table-responsive">
                         <table class="table table-dark table-hover align-middle mb-0">
                             <thead>
@@ -100,7 +261,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="activities-tbody">
                                 <tr>
                                     <td>09:00 AM</td>
                                     <td>Morning Meeting</td>
@@ -128,60 +289,99 @@
             <div class="col-12 col-lg-5">
                 <div class="bg-secondary rounded-4 p-4 h-100">
                     <h2 class="mb-4">Leaderboard</h2>
-                    <!-- Responsive Podium: row on md+, column on sm -->
-                    <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center align-items-end mb-4">
-                        <div class="col d-flex">
-                            <div class="leaderboard-card second flex-fill w-100">
-                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
-                                <div><strong>John Doe</strong></div>
-                                <div>850 Points</div>
-                                <button class="view-scores" data-user="John Doe" data-score="850"><i class="fas fa-eye"></i></button>
-                            </div>
-                        </div>
+                    <!-- Top 3 Students -->
+                    <div id="topThree" class="row row-cols-1 row-cols-md-3 g-3 justify-content-center align-items-end mb-4">
                         <div class="col d-flex">
                             <div class="leaderboard-card first flex-fill w-100">
-                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
-                                <div><strong>Jane Smith</strong></div>
-                                <div>950 Points</div>
+                                <div class="position-badge bg-success">1</div>
+                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
+                                <div><strong class="student-name-1">Jane Smith</strong></div>
+                                <div class="student-score-1">950 Points</div>
                                 <button class="view-scores" data-user="Jane Smith" data-score="950"><i class="fas fa-eye"></i></button>
                             </div>
                         </div>
                         <div class="col d-flex">
+                            <div class="leaderboard-card second flex-fill w-100">
+                                <div class="position-badge bg-primary">2</div>
+                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
+                                <div><strong class="student-name-2">John Doe</strong></div>
+                                <div class="student-score-2">850 Points</div>
+                                <button class="view-scores" data-user="John Doe" data-score="850"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="col d-flex">
                             <div class="leaderboard-card third flex-fill w-100">
-                                <div class="user-avatar mb-2"><i class="fas fa-user"></i></div>
-                                <div><strong>Mike Johnson</strong></div>
-                                <div>750 Points</div>
+                                <div class="position-badge bg-danger">3</div>
+                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
+                                <div><strong class="student-name-3">Mike Johnson</strong></div>
+                                <div class="student-score-3">750 Points</div>
                                 <button class="view-scores" data-user="Mike Johnson" data-score="750"><i class="fas fa-eye"></i></button>
                             </div>
                         </div>
                     </div>
-                    <div class="list-group mb-3">
-                        <div class="list-group-item bg-dark d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-3">4</span>
-                                <div class="user-avatar small me-2" style="width:32px;height:32px;"><i class="fas fa-user"></i></div>
-                                <div>
-                                    <div><strong>Sarah Wilson</strong></div>
-                                    <div class="small text-secondary">700 Points</div>
-                                </div>
-                            </div>
-                            <button class="view-scores" data-user="Sarah Wilson" data-score="700"><i class="fas fa-eye"></i></button>
-                        </div>
-                        <div class="list-group-item bg-dark d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <span class="badge bg-primary me-3">5</span>
-                                <div class="user-avatar small me-2" style="width:32px;height:32px;"><i class="fas fa-user"></i></div>
-                                <div>
-                                    <div><strong>Tom Brown</strong></div>
-                                    <div class="small text-secondary">650 Points</div>
-                                </div>
-                            </div>
-                            <button class="view-scores" data-user="Tom Brown" data-score="650"><i class="fas fa-eye"></i></button>
+                    
+                    <!-- View More Button -->
+                    <button id="viewMoreBtn" class="btn btn-primary w-100 mb-4">
+                        View All Rankings
+                    </button>
+
+                    <!-- Full Rankings Table (Hidden by default) -->
+                    <div id="fullRankings" class="d-none">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Student</th>
+                                        <th>Points</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="leaderboard-tbody">
+                                    <tr>
+                                        <td><span class="badge bg-warning">1</span></td>
+                                        <td>Jane Smith</td>
+                                        <td>950</td>
+                                        <td><button class="table-view-btn view-scores" data-user="Jane Smith" data-score="950"><i class="fas fa-eye"></i> View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">2</span></td>
+                                        <td>John Doe</td>
+                                        <td>850</td>
+                                        <td><button class="table-view-btn view-scores" data-user="John Doe" data-score="850"><i class="fas fa-eye"></i> View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">3</span></td>
+                                        <td>Mike Johnson</td>
+                                        <td>750</td>
+                                        <td><button class="table-view-btn view-scores" data-user="Mike Johnson" data-score="750"><i class="fas fa-eye"></i> View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">4</span></td>
+                                        <td>Sarah Wilson</td>
+                                        <td>700</td>
+                                        <td><button class="table-view-btn view-scores" data-user="Sarah Wilson" data-score="700"><i class="fas fa-eye"></i> View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">5</span></td>
+                                        <td>Tom Brown</td>
+                                        <td>650</td>
+                                        <td><button class="table-view-btn view-scores" data-user="Tom Brown" data-score="650"><i class="fas fa-eye"></i> View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <button class="btn btn-primary w-100"><i class="fas fa-chevron-down me-2"></i>View More</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-container d-none">
+        <div class="text-center">
+            <span class="loader"></span>
+            <div class="loader-text">Loading...</div>
         </div>
     </div>
 
@@ -225,25 +425,305 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+        var start_time = ''
+        $(document).ready(function(){
+            // Show loader
+            $('#loader').removeClass('d-none');
+            
+            $.get('https://script.google.com/macros/s/AKfycbxyxF_0Fus5qEsJvAANn_Fej7u7uF3fCMt5iwjh59KrilGsPORq0xUfBVjr4jhuwWKe/exec',function(response){
+                var students = response.students,
+                activities = response.activities,
+                results = response.results;
+
+                console.log(results);
+
+                start_time = response.start_time;
+                
+                $('.activities-tbody, .leaderboard-tbody').empty();
+
+                for(var i = 0; i < activities.length; i++){
+                    if(activities[i][0] == '1'){
+                        $('.activities-tbody').append(`
+                            <tr>
+                                <td>${activities[i][3]} Minutes</td>
+                                <td>${activities[i][1]}</td>
+                                <td>${activities[i][2]}</td>
+                                <td><i class="fas fa-eye"></i></td>
+                            </tr>
+                        `);
+                    }
+                }
+
+                if(results.length == 0){
+                    for(var i=0; i<students.length; i++){
+                        if(i == 0){
+                            $('.student-name-1').text(students[i][0]);
+                            $('.student-score-1').text('0');
+                        }else if(i == 1){
+                            $('.student-name-2').text(students[i][0]);
+                            $('.student-score-2').text('0');
+                        }else if(i == 2){
+                            $('.student-name-3').text(students[i][0]);
+                            $('.student-score-3').text('0');
+                        }
+                        $('.leaderboard-tbody').append(`
+                            <tr>
+                                <td><span class="badge ${i+1 == 1 ? 'bg-warning' : i+1 == 2 ? 'bg-primary' : i+1 == 3 ? 'bg-danger' : ''}">${i+1}</span></td>
+                                <td>${students[i][0]}</td>
+                                <td>0</td>
+                                <td><button class="table-view-btn view-scores" data-user="${students[i][0]}" data-score="0"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                        `);
+                    }
+                }
+                else{
+                    results.sort((a, b) => Number(b[10]) - Number(a[10]));
+                    for(var i=0; i<results.length; i++){
+                        if(i == 0){
+                            $('.student-name-1').text(results[i][0]);
+                            $('.student-score-1').text(results[i][10]);
+                        }
+                        else if(i == 1){
+                            $('.student-name-2').text(results[i][0]);
+                            $('.student-score-2').text(results[i][10]);
+                        }
+                        else if(i == 2){
+                            $('.student-name-3').text(results[i][0]);
+                            $('.student-score-3').text(results[i][10]);
+                        }
+
+                        $('.leaderboard-tbody').append(`
+                            <tr>
+                                <td><span class="badge ${i+1 == 1 ? 'bg-warning' : i+1 == 2 ? 'bg-primary' : i+1 == 3 ? 'bg-danger' : ''}">${i+1}</span></td>
+                                <td>${results[i][0]}</td>
+                                <td>${results[i][10]}</td>
+                                <td><button class="table-view-btn view-scores" data-user="${results[i][0]}" data-score="${results[i][10]}"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                        `);
+                    }
+                }
+                
+                // Hide loader after data is loaded
+                $('#loader').addClass('d-none');
+                setInterval(updateLeaderboard, 5000);
+            })
+        })
+
+        function updateLeaderboard(){
+            $.get('https://script.google.com/macros/s/AKfycbxyxF_0Fus5qEsJvAANn_Fej7u7uF3fCMt5iwjh59KrilGsPORq0xUfBVjr4jhuwWKe/exec?page=leaderboard',function(response){
+                var results = response.results;
+
+                if(results.length == 0){
+                    return;
+                }
+
+                $('.leaderboard-tbody').empty();
+
+                results.sort((a, b) => Number(b[10]) - Number(a[10]));
+                for(var i=0; i<results.length; i++){
+                    if(i == 0){
+                        $('.student-name-1').text(results[i][0]);
+                        $('.student-score-1').text(results[i][10]);
+                    }
+                    else if(i == 1){
+                        $('.student-name-2').text(results[i][0]);
+                        $('.student-score-2').text(results[i][10]);
+                    }
+                    else if(i == 2){
+                        $('.student-name-3').text(results[i][0]);
+                        $('.student-score-3').text(results[i][10]);
+                    }
+
+                    $('.leaderboard-tbody').append(`
+                        <tr>
+                            <td><span class="badge ${i+1 == 1 ? 'bg-warning' : i+1 == 2 ? 'bg-primary' : i+1 == 3 ? 'bg-danger' : ''}">${i+1}</span></td>
+                            <td>${results[i][0]}</td>
+                            <td>${results[i][10]}</td>
+                            <td><button class="table-view-btn view-scores" data-user="${results[i][0]}" data-score="${results[i][10]}"><i class="fas fa-eye"></i></button></td>
+                        </tr>
+                    `);
+                }
+            })
+        }
+
         // Update current time
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString();
             document.getElementById('current-time').textContent = timeString;
+
+            if (start_time !== '') {
+                // Check event date
+                let eventDateStr = start_time[0][0];
+                let [eventDay, eventMonth, eventYear] = eventDateStr.split('/').map(Number);
+                let eventDate = new Date(eventYear, eventMonth - 1, eventDay);
+                let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                if (today.getTime() < eventDate.getTime()) {
+                    // Not event day yet, show dash in status
+                    $('.activities-tbody tr').each(function () {
+                        $(this).find('td:last').html('<span class="badge bg-secondary p-2">-</span>');
+                        $(this).removeClass('activity-in-progress');
+                    });
+                    return;
+                } else if (today.getTime() > eventDate.getTime()) {
+                    // Event is in the past, show Completed
+                    $('.activities-tbody tr').each(function () {
+                        $(this).find('td:last').html('<span class="badge bg-success p-2">Completed</span>');
+                        $(this).removeClass('activity-in-progress');
+                    });
+                    return;
+                }
+
+                // Event is today, proceed as before
+                let check_time = start_time[0][1];
+                let [timePart, meridian] = check_time.split(' ');
+                let [hh, mm, ss] = timePart.split(':').map(Number);
+                if (meridian === 'PM' && hh < 12) hh += 12;
+                if (meridian === 'AM' && hh === 12) hh = 0;
+                let totalSeconds = hh * 3600 + mm * 60 + ss;
+                let currentTimeInSeconds = timeToSeconds(timeString);
+                let foundInProgress = false;
+                let totalTimeUsed = 0;
+
+                $('.activities-tbody tr').each(function () {
+                    let tr = $(this);
+                    let timeText = tr.find('td:first').text().replace(' Minutes', '').trim();
+                    let minutesToAdd = parseFloat(timeText);
+                    let activitySeconds = Math.round(minutesToAdd * 60);
+
+                    let activityStartSeconds = totalSeconds + totalTimeUsed;
+                    let timeUntilStart = activityStartSeconds - currentTimeInSeconds;
+
+                    tr.removeClass('activity-in-progress');
+
+                    if (timeUntilStart > 0) {
+                        // Activity hasn't started yet
+                        let hoursUntilStart = Math.floor(timeUntilStart / 3600);
+                        let minutesUntilStart = Math.floor((timeUntilStart % 3600) / 60);
+                        let secondsUntilStart = timeUntilStart % 60;
+
+                        let startsInStr = '';
+                        if (hoursUntilStart > 0) startsInStr += `${hoursUntilStart}h `;
+                        if (minutesUntilStart > 0 || hoursUntilStart > 0) startsInStr += `${minutesUntilStart}m `;
+                        startsInStr += `${secondsUntilStart}s`;
+
+                        tr.find('td:last').html(`<span class="badge bg-warning p-2">Starts In ${startsInStr}</span>`);
+                    } else {
+                        // Activity has started
+                        let remainingSeconds = activitySeconds - (currentTimeInSeconds - activityStartSeconds);
+
+                        if (remainingSeconds > 0) {
+                            let remainingHours = Math.floor(remainingSeconds / 3600);
+                            let remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
+                            let remainingSecs = remainingSeconds % 60;
+
+                            let remainingTimeStr = '';
+                            if (remainingHours > 0) remainingTimeStr += `${remainingHours}h `;
+                            if (remainingMinutes > 0 || remainingHours > 0) remainingTimeStr += `${remainingMinutes}m `;
+                            remainingTimeStr += `${remainingSecs}s`;
+
+                            if (!foundInProgress) {
+                                tr.addClass('activity-in-progress');
+                                tr.find('td:last').html(`<span class="badge bg-info p-2">In Progress - ${remainingTimeStr} left</span>`);
+                                foundInProgress = true;
+                            } else {
+                                tr.find('td:last').html(`<span class="badge bg-success p-2">Completed</span>`);
+                            }
+                        } else {
+                            tr.find('td:last').html(`<span class="badge bg-success p-2">Completed</span>`);
+                        }
+                    }
+
+                    totalTimeUsed += activitySeconds;
+                });
+            }
         }
         setInterval(updateTime, 1000);
         updateTime();
 
-        // Simple timer functionality
-        let seconds = 0;
+        function formatDateToLong(str) {
+            // str: dd/mm/yyyy
+            let [day, month, year] = str.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
         function updateTimer() {
-            seconds++;
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            if (start_time !== '') {
+                // Get date from start_time[0][0] (dd/mm/yyyy)
+                let eventDateStr = start_time[0][0];
+                let [eventDay, eventMonth, eventYear] = eventDateStr.split('/').map(Number);
+                let eventDate = new Date(eventYear, eventMonth - 1, eventDay);
+                let now = new Date();
+                let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                let timerElem = document.getElementById('timer');
+
+                if (today.getTime() === eventDate.getTime()) {
+                    // Event is today, run normal timer logic
+                    let currentTimeInSeconds = timeToSeconds(now.toLocaleTimeString());
+                    let startTimeInSeconds = timeToSeconds(start_time[0][1]);
+                    let totalActivityTime = 0;
+                    $('.activities-tbody tr').each(function () {
+                        let tr = $(this);
+                        let timeText = tr.find('td:first').text().replace(' Minutes', '').trim();
+                        let minutesToAdd = parseFloat(timeText);
+                        let activitySeconds = Math.round(minutesToAdd * 60);
+                        totalActivityTime += activitySeconds;
+                    });
+                    let eventEndInSeconds = startTimeInSeconds + totalActivityTime;
+                    if (currentTimeInSeconds < startTimeInSeconds) {
+                        // Event not started
+                        let diff = startTimeInSeconds - currentTimeInSeconds;
+                        let hours = Math.floor(diff / 3600);
+                        let minutes = Math.floor((diff % 3600) / 60);
+                        let seconds = diff % 60;
+                        let timerStr = `Event starts in ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        timerElem.textContent = timerStr;
+                        timerElem.style.backgroundColor = '';
+                        timerElem.style.color = '';
+                    } else if (currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds < eventEndInSeconds) {
+                        // Event started, countdown
+                        let remaining = eventEndInSeconds - currentTimeInSeconds;
+                        let hours = Math.floor(remaining / 3600);
+                        let minutes = Math.floor((remaining % 3600) / 60);
+                        let seconds = remaining % 60;
+                        let timerStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        timerElem.textContent = timerStr;
+                        timerElem.style.backgroundColor = '';
+                        timerElem.style.color = '';
+                    } else {
+                        // Event ended
+                        timerElem.textContent = 'EVENT END';
+                        timerElem.style.backgroundColor = '';
+                        timerElem.style.color = 'red';
+                    }
+                } else if (today.getTime() < eventDate.getTime()) {
+                    // Event is in the future
+                    timerElem.textContent = `Event starts on ${formatDateToLong(eventDateStr)}`;
+                    timerElem.style.backgroundColor = '';
+                    timerElem.style.color = '';
+                } else {
+                    // Event is in the past
+                    timerElem.textContent = 'Event end';
+                    timerElem.style.backgroundColor = '';
+                    timerElem.style.color = 'red';
+                }
+            }
         }
         setInterval(updateTimer, 1000);
+        updateTimer();
+        
+        function timeToSeconds(timeStr) {
+            let [timePart, meridian] = timeStr.split(' ');
+            let [hh, mm, ss] = timePart.split(':').map(Number);
+
+            // Convert to 24-hour time
+            if (meridian === 'PM' && hh < 12) hh += 12;
+            if (meridian === 'AM' && hh === 12) hh = 0;
+
+            return hh * 3600 + mm * 60 + ss;
+        }
 
         // Bootstrap Modal functionality
         // document.addEventListener('DOMContentLoaded', function() {
@@ -262,6 +742,24 @@
         // $(document).on('click','.close-btn',function(){
         //     $('#scoreModal').modal('hide');
         // });
+
+        document.getElementById('viewMoreBtn').addEventListener('click', function() {
+            const topThree = document.getElementById('topThree');
+            const fullRankings = document.getElementById('fullRankings');
+            const button = this;
+            
+            if (fullRankings.classList.contains('d-none')) {
+                topThree.classList.add('d-none');
+                fullRankings.classList.remove('d-none');
+                button.innerHTML = 'Show Top 3';
+                button.classList.add('rotated');
+            } else {
+                topThree.classList.remove('d-none');
+                fullRankings.classList.add('d-none');
+                button.innerHTML = 'View All Rankings';
+                button.classList.remove('rotated');
+            }
+        });
     </script>
 </body>
 </html> 
