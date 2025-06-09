@@ -332,7 +332,6 @@
             var error = true;
             $('.alert-danger').remove();
             $('select').each(function(){
-                console.log($(this).find('option:selected').val());
                 if($(this).find('option:selected').val() == ''){
                     $(this).closest('.error-select').append(`
                         <div class="text-danger alert-danger">Please fill this field</div>

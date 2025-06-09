@@ -425,7 +425,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        var start_time = ''
+        var start_time = '', emailFlag = true;
         $(document).ready(function(){
             // Show loader
             $('#loader').removeClass('d-none');
@@ -434,8 +434,6 @@
                 var students = response.students,
                 activities = response.activities,
                 results = response.results;
-
-                console.log(results);
 
                 start_time = response.start_time;
                 
@@ -684,6 +682,11 @@
                         timerElem.style.color = '';
                     } else if (currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds < eventEndInSeconds) {
                         // Event started, countdown
+                        if(emailFlag){
+                            emailFlag = false;
+                            $.post('https://script.google.com/macros/s/AKfycbxyxF_0Fus5qEsJvAANn_Fej7u7uF3fCMt5iwjh59KrilGsPORq0xUfBVjr4jhuwWKe/exec?page=email',function(response){
+                            })
+                        }
                         let remaining = eventEndInSeconds - currentTimeInSeconds;
                         let hours = Math.floor(remaining / 3600);
                         let minutes = Math.floor((remaining % 3600) / 60);
