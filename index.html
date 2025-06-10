@@ -28,6 +28,12 @@
             text-align: center;
             margin-bottom: 1rem;
         }
+        .leaderboard-card .student-name {
+            height: 1.5em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
         .user-avatar {
             width: 60px;
             height: 60px;
@@ -223,6 +229,77 @@
             background: rgba(23, 162, 184, 0.1) !important;
             border-left: 4px solid #17a2b8 !important;
         }
+        .bg-gradient {
+            background: black;
+        }
+        .modal-content {
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-body {
+            padding: 2rem;
+        }
+        .score-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .score-item h5 {
+            color: #fff;
+        }
+        .score-breakdown h6 {
+            color: #fff;
+        }
+        .btn-close {
+            background-color: red;
+            opacity: 1;
+        }
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-modal-overlay.active {
+            display: flex;
+        }
+        .custom-modal-content {
+            background: #181a20;
+            color: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-width: 340px;
+            max-width: 95vw;
+            position: relative;
+            animation: modalPopIn 0.2s cubic-bezier(.4,2,.6,1) 1;
+        }
+        @keyframes modalPopIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .custom-modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #ff4d4f;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+        .custom-modal-close:hover {
+            color: #fff;
+        }
     </style>
 </head>
 <body class="bg-dark text-light">
@@ -294,8 +371,10 @@
                         <div class="col d-flex">
                             <div class="leaderboard-card first flex-fill w-100">
                                 <div class="position-badge bg-success">1</div>
-                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
-                                <div><strong class="student-name-1">Jane Smith</strong></div>
+                                <div class="user-avatar my-2">
+                                    <img src="" alt="Student 1" class="student-image" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div class="student-name"><strong class="student-name-1">Jane Smith</strong></div>
                                 <div class="student-score-1">950 Points</div>
                                 <button class="view-scores" data-user="Jane Smith" data-score="950"><i class="fas fa-eye"></i></button>
                             </div>
@@ -303,8 +382,10 @@
                         <div class="col d-flex">
                             <div class="leaderboard-card second flex-fill w-100">
                                 <div class="position-badge bg-primary">2</div>
-                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
-                                <div><strong class="student-name-2">John Doe</strong></div>
+                                <div class="user-avatar my-2">
+                                    <img src="" alt="Student 2" class="student-image" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div class="student-name"><strong class="student-name-2">John Doe</strong></div>
                                 <div class="student-score-2">850 Points</div>
                                 <button class="view-scores" data-user="John Doe" data-score="850"><i class="fas fa-eye"></i></button>
                             </div>
@@ -312,8 +393,10 @@
                         <div class="col d-flex">
                             <div class="leaderboard-card third flex-fill w-100">
                                 <div class="position-badge bg-danger">3</div>
-                                <div class="user-avatar my-2"><i class="fas fa-user"></i></div>
-                                <div><strong class="student-name-3">Mike Johnson</strong></div>
+                                <div class="user-avatar my-2">
+                                    <img src="" alt="Student 3" class="student-image" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div class="student-name"><strong class="student-name-3">Mike Johnson</strong></div>
                                 <div class="student-score-3">750 Points</div>
                                 <button class="view-scores" data-user="Mike Johnson" data-score="750"><i class="fas fa-eye"></i></button>
                             </div>
@@ -385,38 +468,24 @@
         </div>
     </div>
 
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="scoreModal" tabindex="-1" aria-labelledby="scoreModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-secondary text-dark">
-          <div class="modal-header">
-            <h5 class="modal-title" id="scoreModalLabel">User Score</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <h2 id="modalUserName"></h2>
-            <div class="score-details">
-                <div class="score-item mb-3">
-                    <h5>Total Score</h5>
-                    <p id="modalTotalScore" class="fs-4 mb-0"></p>
-                </div>
-                <div class="score-breakdown">
-                    <h6>Score Breakdown</h6>
-                    <div class="d-flex justify-content-between border-bottom py-1">
-                        <span>Daily Challenges</span>
-                        <span id="modalDailyScore">350</span>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom py-1">
-                        <span>Weekly Goals</span>
-                        <span id="modalWeeklyScore">250</span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span>Special Events</span>
-                        <span id="modalSpecialScore">150</span>
-                    </div>
-                </div>
+    <!-- Custom JS Modal for Student Details -->
+    <div id="studentModalCustom" class="custom-modal-overlay">
+      <div class="custom-modal-content">
+        <button class="custom-modal-close" id="customModalCloseBtn">&times;</button>
+        <h5 class="modal-title mb-3">Student Details</h5>
+        <div class="text-center mb-4">
+          <img id="modalStudentImage" src="" alt="Student Image" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+        </div>
+        <h2 id="modalStudentName" class="text-center mb-3"></h2>
+        <div class="score-details">
+            <div class="score-item mb-3">
+                <h5>Total Score</h5>
+                <p id="modalStudentTotalScore" class="fs-4 mb-0"></p>
             </div>
-          </div>
+            <div class="score-breakdown">
+                <h6>Activity Scores</h6>
+                <div id="modalActivityScores" class="d-flex flex-column"></div>
+            </div>
         </div>
       </div>
     </div>
@@ -425,15 +494,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        var start_time = '', emailFlag = true;
+        var start_time = '', emailFlag = true, students = [], modal_activity_scores = [];
         $(document).ready(function(){
             // Show loader
             $('#loader').removeClass('d-none');
             
             $.get('https://script.google.com/macros/s/AKfycbxyxF_0Fus5qEsJvAANn_Fej7u7uF3fCMt5iwjh59KrilGsPORq0xUfBVjr4jhuwWKe/exec',function(response){
-                var students = response.students,
-                activities = response.activities,
-                results = response.results;
+                students = response.students;
+                var activities = response.activities;
+                var results = response.results;
+                modal_activity_scores = results;
 
                 start_time = response.start_time;
                 
@@ -457,12 +527,21 @@
                         if(i == 0){
                             $('.student-name-1').text(students[i][0]);
                             $('.student-score-1').text('0');
+                            $('.leaderboard-card.first .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[i][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                            $('.leaderboard-card.first .view-scores').attr('data-user', students[i][0]);
+                            $('.leaderboard-card.first .view-scores').attr('data-score', 0);
                         }else if(i == 1){
                             $('.student-name-2').text(students[i][0]);
                             $('.student-score-2').text('0');
+                            $('.leaderboard-card.second .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[i][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                            $('.leaderboard-card.second .view-scores').attr('data-user', students[i][0]);
+                            $('.leaderboard-card.second .view-scores').attr('data-score', 0);
                         }else if(i == 2){
                             $('.student-name-3').text(students[i][0]);
                             $('.student-score-3').text('0');
+                            $('.leaderboard-card.third .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[i][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                            $('.leaderboard-card.third .view-scores').attr('data-user', students[i][0]);
+                            $('.leaderboard-card.third .view-scores').attr('data-score', 0);
                         }
                         $('.leaderboard-tbody').append(`
                             <tr>
@@ -480,14 +559,32 @@
                         if(i == 0){
                             $('.student-name-1').text(results[i][0]);
                             $('.student-score-1').text(results[i][10]);
+                            for(var j=0; j<students.length; j++){
+                                if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.first .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                    break;
+                                }
+                            }
                         }
                         else if(i == 1){
                             $('.student-name-2').text(results[i][0]);
                             $('.student-score-2').text(results[i][10]);
+                            for(var j=0; j<students.length; j++){
+                                if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.second .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                    break;
+                                }
+                            }
                         }
                         else if(i == 2){
                             $('.student-name-3').text(results[i][0]);
                             $('.student-score-3').text(results[i][10]);
+                            for(var j=0; j<students.length; j++){
+                                if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.third .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                    break;
+                                }
+                            }
                         }
 
                         $('.leaderboard-tbody').append(`
@@ -511,6 +608,8 @@
             $.get('https://script.google.com/macros/s/AKfycbxyxF_0Fus5qEsJvAANn_Fej7u7uF3fCMt5iwjh59KrilGsPORq0xUfBVjr4jhuwWKe/exec?page=leaderboard',function(response){
                 var results = response.results;
 
+                modal_activity_scores = results;
+
                 if(results.length == 0){
                     return;
                 }
@@ -522,14 +621,38 @@
                     if(i == 0){
                         $('.student-name-1').text(results[i][0]);
                         $('.student-score-1').text(results[i][10]);
+                        for(var j=0; j<students.length; j++){
+                            if(students[j][0] == results[i][0]){
+                                $('.leaderboard-card.first .view-scores').attr('data-user', students[j][0]);
+                                $('.leaderboard-card.first .view-scores').attr('data-score', results[i][10]);
+                                $('.leaderboard-card.first .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                break;
+                            }
+                        }
                     }
                     else if(i == 1){
                         $('.student-name-2').text(results[i][0]);
                         $('.student-score-2').text(results[i][10]);
+                        for(var j=0; j<students.length; j++){
+                            if(students[j][0] == results[i][0]){
+                                $('.leaderboard-card.second .view-scores').attr('data-user', students[j][0]);
+                                $('.leaderboard-card.second .view-scores').attr('data-score', results[i][10]);
+                                $('.leaderboard-card.second .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                break;
+                            }
+                        }
                     }
                     else if(i == 2){
                         $('.student-name-3').text(results[i][0]);
                         $('.student-score-3').text(results[i][10]);
+                        for(var j=0; j<students.length; j++){
+                            if(students[j][0] == results[i][0]){
+                                $('.leaderboard-card.third .view-scores').attr('data-user', students[j][0]);
+                                $('.leaderboard-card.third .view-scores').attr('data-score', results[i][10]);
+                                $('.leaderboard-card.third .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
+                                break;
+                            }
+                        }
                     }
 
                     $('.leaderboard-tbody').append(`
@@ -728,24 +851,6 @@
             return hh * 3600 + mm * 60 + ss;
         }
 
-        // Bootstrap Modal functionality
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     var scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'));
-        //     document.querySelectorAll('.view-scores').forEach(function(btn) {
-        //         btn.addEventListener('click', function() {
-        //             var user = this.getAttribute('data-user');
-        //             var score = this.getAttribute('data-score');
-        //             document.getElementById('modalUserName').textContent = user;
-        //             document.getElementById('modalTotalScore').textContent = score + ' Points';
-        //             scoreModal.show();
-        //         });
-        //     });
-        // });
-
-        // $(document).on('click','.close-btn',function(){
-        //     $('#scoreModal').modal('hide');
-        // });
-
         document.getElementById('viewMoreBtn').addEventListener('click', function() {
             const topThree = document.getElementById('topThree');
             const fullRankings = document.getElementById('fullRankings');
@@ -761,6 +866,60 @@
                 fullRankings.classList.add('d-none');
                 button.innerHTML = 'View All Rankings';
                 button.classList.remove('rotated');
+            }
+        });
+
+        // Show student modal on eye icon click
+        $(document).on('click', '.view-scores', function() {
+            var user = $(this).data('user');
+            var score = $(this).data('score');
+            var studentImage = '';
+            for(var i=0; i<students.length; i++){
+                if(students[i][0] == user){
+                    studentImage = `https://drive.google.com/thumbnail?id=${students[i][1]}&sz=w1000`;
+                    break;
+                }
+            }
+
+            $('#modalStudentName').text(user);
+            $('#modalStudentTotalScore').text(score + ' Points');
+            $('#modalStudentImage').attr('src', studentImage);
+            
+
+            var activityScoresHtml = '';
+            modal_activity_scores.forEach(function(item, index) {
+                if(item[0] == user){
+                    for(var i=1; i<modal_activity_scores[index].length; i++){
+                        var splited_activity = modal_activity_scores[index][i].split(' - ');
+                        if(splited_activity.length == 2){
+                            activityScoresHtml += `
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                    <span>${splited_activity[0]}</span>
+                                    <span>${splited_activity[1]}</span>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            });
+            $('#modalActivityScores').html(activityScoresHtml);
+
+            // Show custom modal
+            //delay for 2 seconds
+            setTimeout(function(){
+                $('#studentModalCustom').addClass('active');
+            }, 700);
+        });
+
+        // Close modal on close button click
+        $(document).on('click', '#customModalCloseBtn', function() {
+            $('#studentModalCustom').removeClass('active');
+        });
+
+        // Close modal on overlay click (but not when clicking modal content)
+        $(document).on('mousedown', '#studentModalCustom', function(e) {
+            if (e.target === this) {
+                $(this).removeClass('active');
             }
         });
     </script>
