@@ -261,28 +261,14 @@
                 
                 $('.custom-activity-select').append(`<option value="" selected disabled>Select Activity</option>`)
 
-                if(result.length == 0){
-                    for(var i=0; i<activities.length; i++){
-                        if(activities[i][0] == '1'){
+                for(var i=0; i<activities.length; i++){
+                    if(activities[i][0] == '2'){
+                        if(!result[0][7].includes(activities[i][1]) && 
+                        !result[0][8].includes(activities[i][1]) &&
+                        !result[0][9].includes(activities[i][1])){
                             $('.custom-activity-select').append(`
                                 <option value="${activities[i][1]}">${activities[i][1]}</option>
                             `);
-                        }
-                    }
-                }
-                else{
-                    for(var i=0; i<activities.length; i++){
-                        if(activities[i][0] == '1'){
-                            if(!result[0][1].includes(activities[i][1]) && 
-                            !result[0][2].includes(activities[i][1]) &&
-                            !result[0][3].includes(activities[i][1]) &&
-                            !result[0][4].includes(activities[i][1]) &&
-                            !result[0][5].includes(activities[i][1]) &&
-                            !result[0][6].includes(activities[i][1])){
-                                $('.custom-activity-select').append(`
-                                    <option value="${activities[i][1]}">${activities[i][1]}</option>
-                                `);
-                            }
                         }
                     }
                 }

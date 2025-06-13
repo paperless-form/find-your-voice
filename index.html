@@ -327,7 +327,7 @@
             <!-- Activities Table -->
             <div class="col-12 col-lg-7">
                 <div class="bg-secondary rounded-4 p-4 h-100">
-                    <h2 class="mb-4">Activities Day-1</h2>
+                    <h2 class="mb-4">Activities Day-2</h2>
                     <div class="table-responsive">
                         <table class="table table-dark table-hover align-middle mb-0">
                             <thead>
@@ -339,24 +339,21 @@
                                 </tr>
                             </thead>
                             <tbody class="activities-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <h2 class="my-4">Activities Day-1</h2>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0">
+                            <thead>
                                 <tr>
-                                    <td>09:00 AM</td>
-                                    <td>Morning Meeting</td>
-                                    <td>Daily team sync-up and planning session</td>
-                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
                                 </tr>
-                                <tr>
-                                    <td>10:30 AM</td>
-                                    <td>Project Review</td>
-                                    <td>Review of current sprint progress and blockers</td>
-                                    <td><span class="badge bg-warning text-dark">In Progress</span></td>
-                                </tr>
-                                <tr>
-                                    <td>02:00 PM</td>
-                                    <td>Team Workshop</td>
-                                    <td>UI/UX design principles and best practices</td>
-                                    <td><span class="badge bg-danger">Pending</span></td>
-                                </tr>
+                            </thead>
+                            <tbody class="activities-1-tbody">
                             </tbody>
                         </table>
                     </div>
@@ -507,16 +504,26 @@
 
                 start_time = response.start_time;
                 
-                $('.activities-tbody, .leaderboard-tbody').empty();
+                $('.activities-tbody, .leaderboard-tbody, .activities-1-tbody').empty();
 
                 for(var i = 0; i < activities.length; i++){
-                    if(activities[i][0] == '1'){
+                    if(activities[i][0] == '2'){
                         $('.activities-tbody').append(`
                             <tr>
                                 <td>${activities[i][3]} Minutes</td>
                                 <td>${activities[i][1]}</td>
                                 <td>${activities[i][2]}</td>
                                 <td><i class="fas fa-eye"></i></td>
+                            </tr>
+                        `);
+                    }
+                    else if(activities[i][0] == '1'){
+                        $('.activities-1-tbody').append(`
+                            <tr>
+                                <td>${activities[i][3]} Minutes</td>
+                                <td>${activities[i][1]}</td>
+                                <td>${activities[i][2]}</td>
+                                <td><span class="badge bg-success">Completed</span></td>
                             </tr>
                         `);
                     }
@@ -561,6 +568,8 @@
                             $('.student-score-1').text(results[i][10]);
                             for(var j=0; j<students.length; j++){
                                 if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.first .view-scores').attr('data-user', students[j][0]);
+                                    $('.leaderboard-card.first .view-scores').attr('data-score', results[i][10]);
                                     $('.leaderboard-card.first .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
                                     break;
                                 }
@@ -571,6 +580,8 @@
                             $('.student-score-2').text(results[i][10]);
                             for(var j=0; j<students.length; j++){
                                 if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.second .view-scores').attr('data-user', students[j][0]);
+                                    $('.leaderboard-card.second .view-scores').attr('data-score', results[i][10]);
                                     $('.leaderboard-card.second .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
                                     break;
                                 }
@@ -581,6 +592,8 @@
                             $('.student-score-3').text(results[i][10]);
                             for(var j=0; j<students.length; j++){
                                 if(students[j][0] == results[i][0]){
+                                    $('.leaderboard-card.third .view-scores').attr('data-user', students[j][0]);
+                                    $('.leaderboard-card.third .view-scores').attr('data-score', results[i][10]);
                                     $('.leaderboard-card.third .student-image').attr('src', `https://drive.google.com/thumbnail?id=${students[j][1]}&sz=w1000`).on('error', function() { $(this).attr('src', '').parent().html('<i class="fas fa-user"></i>'); });
                                     break;
                                 }
@@ -896,6 +909,21 @@
                                 <div class="d-flex justify-content-between border-bottom py-1">
                                     <span>${splited_activity[0]}</span>
                                     <span>${splited_activity[1]}</span>
+                                </div>
+                            `;
+                        }
+                        else if(splited_activity.length > 2){
+                            var score = 0;
+                            
+                            for(var j=splited_activity.length-1; j>=0; j--){
+                                score = parseInt(splited_activity[j]);
+                                splited_activity.pop();
+                                break;
+                            }
+                            activityScoresHtml += `
+                                <div class="d-flex justify-content-between border-bottom py-1">
+                                    <span>${splited_activity.join(' - ')}</span>
+                                    <span>${score}</span>
                                 </div>
                             `;
                         }
